@@ -1,0 +1,578 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scripts/camera_control.gd" type="Script" id=1]
+[ext_resource path="res://scripts/2d.gd" type="Script" id=2]
+[ext_resource path="res://scripts/point_info.gd" type="Script" id=3]
+[ext_resource path="res://scripts/points.gd" type="Script" id=4]
+[ext_resource path="res://scripts/grid.gd" type="Script" id=5]
+[ext_resource path="res://scripts/results.gd" type="Script" id=6]
+[ext_resource path="res://scripts/calcbox.gd" type="Script" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 535.738, 316.08 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 10.0
+content_margin_bottom = 11.0
+bg_color = Color( 0.117647, 0.117647, 0.117647, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0.203922, 0.203922, 0.203922, 1 )
+border_blend = true
+shadow_size = 2
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.396078, 0.396078, 0.396078, 1 )
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.239216, 0.239216, 0.239216, 1 )
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 20
+
+[node name="main" type="Node"]
+
+[node name="2d" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="camera_control" type="Node2D" parent="2d"]
+position = Vector2( -686.659, -484.237 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Camera2D" type="Camera2D" parent="2d/camera_control"]
+current = true
+zoom = Vector2( 6, 6 )
+
+[node name="Area2D" type="Area2D" parent="2d/camera_control/Camera2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="2d/camera_control/Camera2D/Area2D"]
+shape = SubResource( 1 )
+
+[node name="points" type="Node2D" parent="2d"]
+script = ExtResource( 4 )
+
+[node name="grid" type="Node2D" parent="2d/points"]
+script = ExtResource( 5 )
+
+[node name="x_axis" type="Line2D" parent="2d/points/grid"]
+width = 3.0
+default_color = Color( 0.32549, 0.32549, 0.32549, 1 )
+
+[node name="y_axis" type="Line2D" parent="2d/points/grid"]
+width = 3.0
+default_color = Color( 0.32549, 0.32549, 0.32549, 1 )
+
+[node name="markers_holder" type="Node2D" parent="2d/points/grid"]
+
+[node name="point_holder" type="Node2D" parent="2d/points"]
+
+[node name="ui" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="point_info" type="PanelContainer" parent="ui/Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -201.0
+margin_top = 15.0
+margin_right = 203.0
+margin_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/Control/point_info"]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 476.0
+margin_bottom = 70.0
+
+[node name="hash" type="LineEdit" parent="ui/Control/point_info/VBoxContainer"]
+margin_right = 456.0
+margin_bottom = 24.0
+focus_mode = 0
+custom_styles/read_only = SubResource( 3 )
+custom_colors/font_color_uneditable = Color( 0.619608, 0.619608, 0.619608, 1 )
+text = "N/A"
+align = 1
+editable = false
+expand_to_text_length = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/Control/point_info/VBoxContainer"]
+margin_top = 28.0
+margin_right = 456.0
+margin_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 10
+alignment = 1
+
+[node name="height" type="VBoxContainer" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_right = 81.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/height"]
+margin_right = 81.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Block Height"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/height"]
+margin_top = 18.0
+margin_right = 81.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="VSeparator" type="VSeparator" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 91.0
+margin_right = 101.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="fee" type="VBoxContainer" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 111.0
+margin_right = 135.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/fee"]
+margin_right = 24.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Fee"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/fee"]
+margin_top = 18.0
+margin_right = 24.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="VSeparator2" type="VSeparator" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 145.0
+margin_right = 155.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="claim" type="VBoxContainer" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 165.0
+margin_right = 233.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/claim"]
+margin_right = 68.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "True Claim"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/claim"]
+margin_top = 18.0
+margin_right = 68.0
+margin_bottom = 32.0
+text = "False"
+align = 1
+
+[node name="VSeparator3" type="VSeparator" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 243.0
+margin_right = 253.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="time" type="VBoxContainer" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 263.0
+margin_right = 295.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/time"]
+margin_right = 32.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Time"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/time"]
+margin_top = 18.0
+margin_right = 32.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="VSeparator4" type="VSeparator" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 305.0
+margin_right = 315.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="date" type="VBoxContainer" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 325.0
+margin_right = 364.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/date"]
+margin_right = 39.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "D/M/Y"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/date"]
+margin_top = 18.0
+margin_right = 39.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="VSeparator5" type="VSeparator" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 374.0
+margin_right = 384.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="second" type="VBoxContainer" parent="ui/Control/point_info/VBoxContainer/HBoxContainer"]
+margin_left = 394.0
+margin_right = 456.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/second"]
+margin_right = 62.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "2nd Place"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/point_info/VBoxContainer/HBoxContainer/second"]
+margin_top = 18.0
+margin_right = 62.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="calc" type="PanelContainer" parent="ui/Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 18.0
+margin_top = -206.0
+margin_right = 249.0
+margin_bottom = -20.0
+grow_vertical = 0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="VBoxContainer" parent="ui/Control/calc"]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 211.0
+margin_bottom = 226.0
+custom_constants/separation = 7
+
+[node name="label" type="Label" parent="ui/Control/calc/title"]
+margin_right = 191.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Calculate Results Based On:"
+align = 1
+
+[node name="VSeparator6" type="HSeparator" parent="ui/Control/calc/title"]
+margin_top = 21.0
+margin_right = 191.0
+margin_bottom = 31.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="start" type="LineEdit" parent="ui/Control/calc/title"]
+margin_top = 38.0
+margin_right = 191.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 100, 0 )
+align = 1
+placeholder_text = "Start Block"
+caret_blink = true
+
+[node name="end" type="LineEdit" parent="ui/Control/calc/title"]
+margin_top = 69.0
+margin_right = 191.0
+margin_bottom = 93.0
+rect_min_size = Vector2( 100, 0 )
+align = 1
+placeholder_text = "End Block"
+caret_blink = true
+
+[node name="VSeparator5" type="HSeparator" parent="ui/Control/calc/title"]
+margin_top = 100.0
+margin_right = 191.0
+margin_bottom = 110.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="fee" type="LineEdit" parent="ui/Control/calc/title"]
+margin_top = 117.0
+margin_right = 191.0
+margin_bottom = 141.0
+rect_min_size = Vector2( 100, 0 )
+align = 1
+placeholder_text = "TX Fee (sats/vB)"
+caret_blink = true
+
+[node name="weight" type="LineEdit" parent="ui/Control/calc/title"]
+margin_top = 148.0
+margin_right = 191.0
+margin_bottom = 172.0
+rect_min_size = Vector2( 100, 0 )
+align = 1
+placeholder_text = "TX Weight (vB)"
+caret_blink = true
+
+[node name="VSeparator7" type="HSeparator" parent="ui/Control/calc/title"]
+margin_top = 179.0
+margin_right = 191.0
+margin_bottom = 189.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="submit" type="Button" parent="ui/Control/calc/title"]
+margin_top = 196.0
+margin_right = 191.0
+margin_bottom = 216.0
+text = "Calculate"
+
+[node name="results" type="PanelContainer" parent="ui/Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 270.0
+margin_top = -73.0
+margin_right = 620.0
+margin_bottom = -20.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/Control/results"]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 362.0
+margin_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 10
+alignment = 1
+
+[node name="hits" type="VBoxContainer" parent="ui/Control/results/HBoxContainer"]
+margin_right = 26.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/results/HBoxContainer/hits"]
+margin_right = 26.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Hits"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/results/HBoxContainer/hits"]
+margin_top = 18.0
+margin_right = 26.0
+margin_bottom = 32.0
+text = "N/a"
+align = 1
+
+[node name="VSeparator" type="VSeparator" parent="ui/Control/results/HBoxContainer"]
+margin_left = 36.0
+margin_right = 46.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="misses" type="VBoxContainer" parent="ui/Control/results/HBoxContainer"]
+margin_left = 56.0
+margin_right = 101.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/results/HBoxContainer/misses"]
+margin_right = 45.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Misses"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/results/HBoxContainer/misses"]
+margin_top = 18.0
+margin_right = 45.0
+margin_bottom = 32.0
+text = "N/a"
+align = 1
+
+[node name="VSeparator2" type="VSeparator" parent="ui/Control/results/HBoxContainer"]
+margin_left = 111.0
+margin_right = 121.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="wasted" type="VBoxContainer" parent="ui/Control/results/HBoxContainer"]
+margin_left = 131.0
+margin_right = 209.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/results/HBoxContainer/wasted"]
+margin_right = 78.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Wasted sats"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/results/HBoxContainer/wasted"]
+margin_top = 18.0
+margin_right = 78.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="VSeparator3" type="VSeparator" parent="ui/Control/results/HBoxContainer"]
+margin_left = 219.0
+margin_right = 229.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="percomb" type="VBoxContainer" parent="ui/Control/results/HBoxContainer"]
+margin_left = 239.0
+margin_right = 342.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/results/HBoxContainer/percomb"]
+margin_right = 103.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Avg. COMB Cost"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/results/HBoxContainer/percomb"]
+margin_top = 18.0
+margin_right = 103.0
+margin_bottom = 32.0
+text = "N/A"
+align = 1
+
+[node name="key" type="PanelContainer" parent="ui/Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -193.22
+margin_top = -73.4746
+margin_right = -19.2205
+margin_bottom = -20.4746
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/Control/key"]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 154.0
+margin_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 10
+alignment = 1
+
+[node name="x" type="VBoxContainer" parent="ui/Control/key/HBoxContainer"]
+margin_right = 58.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/key/HBoxContainer/x"]
+margin_right = 58.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "X Axis"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/key/HBoxContainer/x"]
+margin_top = 18.0
+margin_right = 58.0
+margin_bottom = 32.0
+text = "24 Hours"
+align = 1
+
+[node name="VSeparator" type="VSeparator" parent="ui/Control/key/HBoxContainer"]
+margin_left = 68.0
+margin_right = 78.0
+margin_bottom = 32.0
+custom_styles/separator = SubResource( 4 )
+custom_constants/separation = 10
+
+[node name="y" type="VBoxContainer" parent="ui/Control/key/HBoxContainer"]
+margin_left = 88.0
+margin_right = 134.0
+margin_bottom = 32.0
+
+[node name="label" type="Label" parent="ui/Control/key/HBoxContainer/y"]
+margin_right = 46.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 0.47451 )
+text = "Y Axis"
+align = 1
+
+[node name="info" type="Label" parent="ui/Control/key/HBoxContainer/y"]
+margin_top = 18.0
+margin_right = 46.0
+margin_bottom = 32.0
+text = "50 Sats"
+align = 1
+[connection signal="calc_finished" from="2d" to="2d/points" method="_on_2d_calc_finished"]
+[connection signal="calc_finished" from="2d" to="ui/Control/results" method="_on_2d_calc_finished"]
+[connection signal="cam_connect" from="2d/camera_control" to="2d/points" method="_on_camera_control_cam_connect"]
+[connection signal="zoom_changed" from="2d/camera_control" to="2d/points/grid" method="_on_camera_control_zoom_changed"]
+[connection signal="input_event" from="2d/camera_control/Camera2D/Area2D" to="2d/camera_control" method="_on_Area2D_input_event"]
+[connection signal="point_clicked" from="2d/points" to="ui/Control/point_info" method="_on_points_point_clicked"]
+[connection signal="points_initialized" from="2d/points" to="2d/camera_control" method="_on_points_points_initialized"]
+[connection signal="calc_requested" from="ui/Control/calc" to="2d" method="_on_calc_calc_requested"]
+[connection signal="pressed" from="ui/Control/calc/title/submit" to="ui/Control/calc" method="_on_submit_pressed"]

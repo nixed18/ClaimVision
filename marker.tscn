@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/marker.gd" type="Script" id=1]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://fonts/ariblk.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 55
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 45
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 1 )
+
+[node name="marker" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Line2D" type="Line2D" parent="."]
+width = 1.0
+default_color = Color( 0.32549, 0.32549, 0.32549, 0.537255 )
+
+[node name="y_label" type="Label" parent="."]
+margin_left = 87.3843
+margin_top = -164.485
+margin_right = 308.384
+margin_bottom = -85.4846
+grow_vertical = 2
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.321569, 0.321569, 0.321569, 1 )
+text = "50 sats"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="x_label" type="Label" parent="."]
+margin_left = -472.321
+margin_top = 156.851
+margin_right = -236.321
+margin_bottom = 220.851
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.321569, 0.321569, 0.321569, 1 )
+text = "20/1/2021"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
