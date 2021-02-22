@@ -51,21 +51,32 @@ func _process(_delta):
 func mod_mouse_zone_size():
 	area2d_col.shape.extents = OS.get_window_size()/2*camera.zoom
 
-func on_size_changed():
-	mod_mouse_zone_size()
-
-
-func _on_Area2D_input_event(_viewport, event, _shape_idx):
-	if event is InputEventMouseButton and event.button_index == 4:
-		camera.zoom -= camera.zoom*0.1#Vector2(0.1, 0.1)
-	elif event is InputEventMouseButton and event.button_index == 5:
-		camera.zoom += camera.zoom*0.1#Vector2(0.1, 0.1)
-		
+func zoom_change():
 	camera.zoom.x = clamp(camera.zoom.x, 0.6, 80)
 	camera.zoom.y = clamp(camera.zoom.y, 0.6, 80)
 	emit_signal("zoom_changed", camera.zoom.x)
 	
 	mod_mouse_zone_size()
+
+func on_size_changed():
+	mod_mouse_zone_size()
+
+
+func _on_Area2D_input_event(_viewport, event, _shape_idx):
+	if event is InputEventMouseButton and event.button_index == 1 and event.pressed:
+		camera_is_moving = true
+		prev_mouse_position = get_local_mouse_position()
+	elif event is InputEventMouseButton and event.button_index == 1 and not event.pressed:
+		camera_is_moving = false
+	
+	if event is InputEventMouseButton and event.button_index == 4:
+		camera.zoom -= camera.zoom*0.1#Vector2(0.1, 0.1)
+		zoom_change()
+	elif event is InputEventMouseButton and event.button_index == 5:
+		camera.zoom += camera.zoom*0.1#Vector2(0.1, 0.1)
+		zoom_change()
+		
+
 
 
 func _on_points_points_initialized():

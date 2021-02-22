@@ -21,7 +21,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-client="*res://scripts/client_websocket.gd"
+client="*res://scripts/client.gd"
+clientws="*res://scripts/client_websocket.gd"
+audio="*res://AudioStreamPlayer.tscn"
 
 [input]
 

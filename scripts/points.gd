@@ -63,6 +63,10 @@ func pull_blocks(start_height, end_height):
 	return output
 	pass
 
+func update_points():
+	for point in active_points:
+		point.change(point.details, OS.get_unix_time())
+
 func initialize_points(array):
 	#X = 0 will be the highest block.
 	setup_data(array)

@@ -2,9 +2,10 @@ extends Node
 
 signal connected_to_server()
 signal db_received(data)
+signal new_block(block)
 
-var s_ip = "216.218.207.108"
-var s_port = 21111
+var s_ip = "21teeth.org"
+var s_port = 21112
 
 var my_client = null
 var pps = null
@@ -79,6 +80,9 @@ func receive_packet(packet):
 		
 	if not packet.size() > 0:
 		return
+		
+	if packet[0] == null:
+		emit_signal("db_received", null)
 		
 	if typeof(packet[0]) != 18:
 		return
