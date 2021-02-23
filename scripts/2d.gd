@@ -3,7 +3,7 @@ extends Node2D
 signal calc_finished(dict)
 
 var filepath = "user://claims.log"
-var type = "ws"
+var type = "tcp"
 
 onready var points = $points
 

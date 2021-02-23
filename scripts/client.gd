@@ -4,7 +4,7 @@ signal connected_to_server()
 signal db_received(data)
 signal new_block(block)
 
-var s_ip = "21teeth.org"
+var s_ip = "157.245.240.193"
 var s_port = 21112
 
 var my_client = null
